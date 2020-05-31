@@ -2,6 +2,7 @@
 //add maybe board.length instead to allow for rezisig.
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 
 using namespace std;
 
@@ -60,6 +61,7 @@ void initializeboard(int board[3][3]){
     }
   }
 }
+
 bool checkforwin(int board[3][3]){
   //rows, columns, diagonals
   for (int j = 0; j < 3; j++){
@@ -77,6 +79,53 @@ bool checkforwin(int board[3][3]){
     return true;
   }
   return false;
+}
+
+void swap(int in[], int a, int b){
+  int t = in[a];
+  in[a] = in[b];
+  in[b] = t;
+}
+void makeperms(int input[], int length){
+  /*struct item{
+    int val;
+    int prevspots[length];
+    int futurespots[length];
+  } ;
+  item items[length];
+  for (int i = 0; i<length; i++){
+    items[i].val = input[i];
+    items[i].prevspots[0] = i;
+    for (j =0; j<length; j++){
+      if (!items[i].prevspots[0]==j){
+        items[i].futurespots[j] = j;
+      }
+      else {
+        items[i].futurespots[j] = -1;
+      }
+    }
+  }*/
+  int indexes[length];
+  for (int i =0; i<length; i++){
+    indexes[i] = 0;
+  }
+  //note: 01234 is first while 43210 is last (going from increase to decrease)
+  //0123* 1023 1203 1230* 2130 2310 2301* 3201 3021 3012* 0312 0132 == length(length -1)
+  //Note: that is half of all, just running through and repeatedly swapping neighbours
+  //next swap mid first
+  //0213 2013 2103 2130^ 1230 1320 1302 3102 3012^ 3021^ 0321 0231 
+}
+
+void fillfile(int board[3][3], int sequence[][2], bool turn, int length){
+  int newsequence[length][2];
+  for (int i =0; i<length; i++){
+    //definitely not a great idea
+    //produces array of numbers like [1][0][1][0]
+    //now I can just create every permutation of that array
+    newsequence[i][0]=board[sequence[i][0]][sequence[i][1]];
+    newsequence[i][1]=i; //to store their correct position to be placed.
+  }
+
 }
 void computerturn(int board[3][3], bool turn, int left){
   int compboard[3][3];
@@ -109,7 +158,8 @@ void computerturn(int board[3][3], bool turn, int left){
       }
     }
   }
-  for (int i = 0; i<left; i++){
+
+  /*for (int i = 0; i<left; i++){
     compboard[listleft[i][0]][listleft[i][1]] = playnum;
     t2 = !t2;
     leftcount--;
@@ -136,7 +186,7 @@ void computerturn(int board[3][3], bool turn, int left){
     total[i]++;
 
 
-  }
+  }*/
 }
 int main(){
   int game[3][3];
